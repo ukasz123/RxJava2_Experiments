@@ -15,12 +15,12 @@ object Printer {
 fun logThread(message: String) = Printer.print('[' + Thread.currentThread().name + "]: " + message)
 
 // high-order function for converting item to log entry
-inline fun <T> logItem(crossinline body: (T) -> String): (T) -> Unit = { logThread(body(it)) }
+inline fun <reified T> logItem(crossinline body: (T) -> String): (T) -> Unit = { logThread(body(it)) }
 
 
-fun <T> Observable<T>.logNext(prepareMessage: (T) -> String): Observable<T>
-        = this.doOnNext { logItem(prepareMessage) }
+inline fun <reified T> Observable<T>.logNext(crossinline prepareMessage: (T) -> String): Observable<T>
+        = this.doOnNext { logItem(prepareMessage)(it) }
 
-fun <T> Observable<T>.logSubscribing(prepareMessage: (Disposable) -> String): Observable<T>
-        = this.doOnSubscribe { logItem(prepareMessage) }
+inline fun <reified T> Observable<T>.logSubscribing(crossinline prepareMessage: (Disposable) -> String): Observable<T>
+        = this.doOnSubscribe { logItem(prepareMessage)(it) }
 

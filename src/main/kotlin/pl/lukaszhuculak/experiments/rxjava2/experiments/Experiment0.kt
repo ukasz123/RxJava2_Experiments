@@ -1,7 +1,10 @@
 package pl.lukaszhuculak.experiments.rxjava2.experiments
 
 import io.reactivex.Observable
-import pl.lukaszhuculak.experiments.rxjava2.*
+import pl.lukaszhuculak.experiments.rxjava2.Experiment
+import pl.lukaszhuculak.experiments.rxjava2.logNext
+import pl.lukaszhuculak.experiments.rxjava2.logSubscribing
+import pl.lukaszhuculak.experiments.rxjava2.range
 
 /**
  * Created by Lukasz Huculak on 17.10.2017.
@@ -13,8 +16,6 @@ object Experiment0 : Experiment<String>() {
     override fun prepareExperiment(): Observable<String> {
         val c = range(5).map { "ev-$it" }
                 .logSubscribing { tag + " subscribed" }
-                .doOnNext { logThread("with thread: $it") }
-                .doOnNext { logItem<String> { "withLogItem: $it" } }
                 .logNext { tag + " logNext: $it" }
         return c
     }
