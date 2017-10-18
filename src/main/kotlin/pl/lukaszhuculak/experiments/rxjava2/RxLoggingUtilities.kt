@@ -11,8 +11,12 @@ import io.reactivex.disposables.Disposable
 object Printer {
     var print: (Any?) -> Unit = { message -> println(message) }
 }
+// SHOULD PRINT TIMESTAMP TO LOG
+const val SHOW_TIMESTAMP = false
 
-fun logThread(message: String) = Printer.print('[' + Thread.currentThread().name + "]: " + message)
+val timestampString = if (SHOW_TIMESTAMP) "("+(System.currentTimeMillis()%100000)+")" else ""
+
+fun logThread(message: String) = Printer.print('[' + Thread.currentThread().name + "]$timestampString: " + message)
 
 // high-order function for converting item to log entry
 inline fun <reified T> logItem(crossinline body: (T) -> String): (T) -> Unit = { logThread(body(it)) }
