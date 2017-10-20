@@ -24,5 +24,7 @@ private val experiments: Array<Experiment<*>> = arrayOf(
         ObservingExperiment1,
         ObservingExperiment2,
         ObservingExperiment3,
-        DifferentSubscribeWithSourcesZippedExperiment
+        DifferentSubscribeWithSourcesZippedExperiment,
+        CreateWithDeferExperiment,
+        CreateWithSwitchMapExperiment
 )
