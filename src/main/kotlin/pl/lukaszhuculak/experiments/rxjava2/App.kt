@@ -12,16 +12,16 @@ import java.util.concurrent.Executors
 
 fun main(args: Array<String>) {
     initRxSchedullers()
-    val doneSignal = CountDownLatch(experiments.size)
     val executor = Executors.newSingleThreadExecutor()
 
     experiments.forEach {
+        val doneSignal = CountDownLatch(1)
         executor.execute {
             logThread("Running experiment: ${it.description}")
             it.run(doneSignal = doneSignal)
         }
+        doneSignal.await()
     }
-    doneSignal.await()
     logThread("${experiments.size} experiments completed")
     System.exit(0)
 }
@@ -29,14 +29,18 @@ fun main(args: Array<String>) {
 private val experiments: Array<Experiment<*>> = arrayOf(
 //        Experiment0,
 //        Experiment1,
-        ObservingExperiment1,
-        ObservingExperiment2,
-        ObservingExperiment3,
-        DifferentSubscribeWithSourcesZippedExperiment,
-        CreateWithDeferExperiment,
-        CreateWithSwitchMapExperiment,
-        CreateWithFlatMapExperiment,
-        BufferExperiment1
+//        ObservingExperiment1,
+//        ObservingExperiment2,
+//        ObservingExperiment3,
+//        DifferentSubscribeWithSourcesZippedExperiment,
+//        CreateWithDeferExperiment,
+//        CreateWithSwitchMapExperiment,
+//        CreateWithFlatMapExperiment,
+        BufferExperiment1,
+        BackendSunnyDayExperiment,
+        BackendSunnyDayWithDelayFlatMapExperiment,
+        BackendSunnyDayWithDelaySwitchMapExperiment,
+        BackendWithErrorsAndDelayExperiment
 )
 
 private object CustomSchedulers {

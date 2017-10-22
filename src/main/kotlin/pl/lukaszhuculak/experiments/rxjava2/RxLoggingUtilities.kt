@@ -28,3 +28,5 @@ inline fun <reified T> Observable<T>.logNext(crossinline prepareMessage: (T) -> 
 inline fun <reified T> Observable<T>.logSubscribing(crossinline prepareMessage: (Disposable) -> String): Observable<T>
         = this.doOnSubscribe { logItem(prepareMessage)(it) }
 
+inline fun <reified T> Observable<T>.logOnError(crossinline prepareMessage: (Throwable) -> String): Observable<T>
+        = this.doOnError { logItem(prepareMessage)(it) }
