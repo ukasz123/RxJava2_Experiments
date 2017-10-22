@@ -40,7 +40,8 @@ private val experiments: Array<Experiment<*>> = arrayOf(
         BackendSunnyDayExperiment,
         BackendSunnyDayWithDelayFlatMapExperiment,
         BackendSunnyDayWithDelaySwitchMapExperiment,
-        BackendWithErrorsAndDelayExperiment
+//        BackendWithErrorsAndDelayExperiment
+        BackendWithErrorsAndDelayExperiment1
 )
 
 private object CustomSchedulers {

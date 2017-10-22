@@ -12,11 +12,12 @@ object Printer {
     var print: (Any?) -> Unit = { message -> println(message) }
 }
 // SHOULD PRINT TIMESTAMP TO LOG
-const val SHOW_TIMESTAMP = false
+const val SHOW_TIMESTAMP = true
 
-val timestampString = if (SHOW_TIMESTAMP) "("+(System.currentTimeMillis()%100000)+")" else ""
+@Suppress("ConstantConditionIf")
+fun timestampString() = if (SHOW_TIMESTAMP) "(" + (System.currentTimeMillis() % 100000) + ")" else ""
 
-fun logThread(message: String) = Printer.print('[' + Thread.currentThread().name + "]$timestampString: " + message)
+fun logThread(message: String) = Printer.print('[' + Thread.currentThread().name + "] ${timestampString()}: " + message)
 
 // high-order function for converting item to log entry
 inline fun <reified T> logItem(crossinline body: (T) -> String): (T) -> Unit = { logThread(body(it)) }
@@ -30,3 +31,7 @@ inline fun <reified T> Observable<T>.logSubscribing(crossinline prepareMessage: 
 
 inline fun <reified T> Observable<T>.logOnError(crossinline prepareMessage: (Throwable) -> String): Observable<T>
         = this.doOnError { logItem(prepareMessage)(it) }
+
+inline fun <reified T> Observable<T>.logMessageOnError(crossinline prepareMessage: (String) -> String): Observable<T>
+        = this.doOnError { logItem(prepareMessage)(it.localizedMessage) }
+
