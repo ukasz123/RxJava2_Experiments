@@ -1,10 +1,17 @@
 package pl.lukaszhuculak.experiments.rxjava2
 
+import io.reactivex.internal.schedulers.RxThreadFactory
+import io.reactivex.plugins.RxJavaPlugins
+import pl.lukaszhuculak.experiments.rxjava2.CustomSchedulers.COMPUTATION
+import pl.lukaszhuculak.experiments.rxjava2.CustomSchedulers.IO
+import pl.lukaszhuculak.experiments.rxjava2.CustomSchedulers.NEW_THREAD
+import pl.lukaszhuculak.experiments.rxjava2.CustomSchedulers.SINGLE
 import pl.lukaszhuculak.experiments.rxjava2.experiments.*
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 
 fun main(args: Array<String>) {
+    initRxSchedullers()
     val doneSignal = CountDownLatch(experiments.size)
     val executor = Executors.newSingleThreadExecutor()
 
@@ -16,6 +23,7 @@ fun main(args: Array<String>) {
     }
     doneSignal.await()
     logThread("${experiments.size} experiments completed")
+    System.exit(0)
 }
 
 private val experiments: Array<Experiment<*>> = arrayOf(
@@ -30,3 +38,18 @@ private val experiments: Array<Experiment<*>> = arrayOf(
         CreateWithFlatMapExperiment,
         BufferExperiment1
 )
+
+private object CustomSchedulers {
+    val COMPUTATION = RxJavaPlugins.createComputationScheduler(RxThreadFactory("ComputationScheduller"))
+    val IO = RxJavaPlugins.createIoScheduler(RxThreadFactory("IOScheduler"))
+    val SINGLE = RxJavaPlugins.createSingleScheduler(RxThreadFactory("SingleScheduler"))
+    val NEW_THREAD = RxJavaPlugins.createNewThreadScheduler(RxThreadFactory("NewThreadScheduler"))
+
+}
+
+private fun initRxSchedullers() {
+    RxJavaPlugins.setInitComputationSchedulerHandler { COMPUTATION }
+    RxJavaPlugins.setInitIoSchedulerHandler { IO }
+    RxJavaPlugins.setInitSingleSchedulerHandler { SINGLE }
+    RxJavaPlugins.setInitNewThreadSchedulerHandler { NEW_THREAD }
+}
