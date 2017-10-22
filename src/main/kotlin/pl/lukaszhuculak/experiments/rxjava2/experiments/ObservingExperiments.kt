@@ -1,17 +1,12 @@
 package pl.lukaszhuculak.experiments.rxjava2.experiments
 
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.schedulers.Schedulers
 import pl.lukaszhuculak.experiments.rxjava2.Experiment
 import pl.lukaszhuculak.experiments.rxjava2.logNext
 import pl.lukaszhuculak.experiments.rxjava2.range
-import pl.lukaszhuculak.experiments.rxjava2.rangeInter
 import java.util.concurrent.TimeUnit
 
-/**
- * Created by Lukasz Huculak on 18.10.2017.
- */
 object ObservingExperiment1 : Experiment<String>() {
     override val description: CharSequence
         get() = "Change scheduler with observeOn"

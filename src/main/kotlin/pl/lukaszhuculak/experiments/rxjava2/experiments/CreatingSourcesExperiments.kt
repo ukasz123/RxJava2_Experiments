@@ -9,9 +9,6 @@ import pl.lukaszhuculak.experiments.rxjava2.logThread
 import pl.lukaszhuculak.experiments.rxjava2.range
 import java.util.concurrent.Callable
 
-/**
- * Created by Lukasz Huculak on 20.10.2017.
- */
 object CreateWithDeferExperiment : Experiment<String>() {
     override val description: CharSequence
         get() = "Create observable source that declares subscribeOn() with defer() operator"
@@ -38,7 +35,6 @@ object CreateWithSwitchMapExperiment : Experiment<String>() {
 
     override fun prepareExperiment(): Observable<String> {
         val supplier: (Int) -> ObservableSource<Int> = {
-
             index ->
             logThread("supplier for $index called")
             range(index).subscribeOn(Schedulers.newThread())
@@ -49,6 +45,27 @@ object CreateWithSwitchMapExperiment : Experiment<String>() {
                 .logNext { "before switchMap(): $it" }
                 .switchMap(supplier)
                 .logNext { "after switchMap(): $it" }
+                .map { "$it" }
+
+    }
+}
+
+
+object CreateWithFlatMapExperiment : Experiment<String>() {
+    override val description: CharSequence
+        get() = "Create observable sources that declares subscribeOn with flatMap() operator"
+
+    override fun prepareExperiment(): Observable<String> {
+        val supplier: (Int) -> ObservableSource<Int> = { index ->
+            logThread("supplier for $index called")
+            range(index).subscribeOn(Schedulers.newThread())
+                    .logNext { item -> "in flat supplier: $item" }
+        }
+        return range(5)
+                .subscribeOn(Schedulers.computation())
+                .logNext { "before flatMap(): $it" }
+                .switchMap(supplier)
+                .logNext { "after flatMap(): $it" }
                 .map { "$it" }
 
     }
