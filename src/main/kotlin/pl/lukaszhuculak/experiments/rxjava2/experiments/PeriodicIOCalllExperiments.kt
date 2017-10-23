@@ -5,8 +5,6 @@ import io.reactivex.schedulers.Schedulers.io
 import pl.lukaszhuculak.experiments.rxjava2.Experiment
 import pl.lukaszhuculak.experiments.rxjava2.logMessageOnError
 import pl.lukaszhuculak.experiments.rxjava2.logNext
-import pl.lukaszhuculak.experiments.rxjava2.logNext
-import pl.lukaszhuculak.experiments.rxjava2.logOnError
 import java.util.concurrent.TimeUnit
 
 /**
@@ -109,6 +107,35 @@ object BackendWithErrorsAndDelayExperiment1 : Experiment<String>() {
                 .logMessageOnError { "after error call: $it" }
                 .onErrorReturn { "error happened: ${it.localizedMessage}" }
                 .logNext { "after onErrorReturn $it" }
+    }
+
+}
+
+
+object BackendWithErrorsAndDelayExperiment2 : Experiment<String>() {
+    override val description: CharSequence
+        get() = "Backend calls that fails sometimes - uses onErrorReturn inside flatMap"
+
+    override fun prepareExperiment(): Observable<String> {
+        return Observable.intervalRange(0, 10, 2, 5, TimeUnit.SECONDS)
+                .logNext { "call id: $it" }
+                .flatMap { id ->
+                    when (id.toInt()) {
+                        4, 6, 8, 10 -> {
+                            Observable.timer(id * 2, TimeUnit.SECONDS, io())
+                                    .flatMap { Observable.error<String>(RuntimeException("Error on call $id")) }
+                        }
+                        else -> {
+                            Observable.timer(id * 2, TimeUnit.SECONDS, io())
+                                    .map { "answer: $id" }
+                        }
+                    }
+                            .onErrorReturn { "error happened: ${it.localizedMessage}" }
+                            .logNext { "after onErrorReturn $it" }
+
+                }
+                .logNext { "after call: $it" }
+                .logMessageOnError { "after error call: $it" }
     }
 
 }
