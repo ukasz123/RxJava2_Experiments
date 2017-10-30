@@ -36,12 +36,14 @@ private val experiments: Array<Experiment<*>> = arrayOf(
 //        CreateWithDeferExperiment,
 //        CreateWithSwitchMapExperiment,
 //        CreateWithFlatMapExperiment,
-        BufferExperiment1,
-        BackendSunnyDayExperiment,
-        BackendSunnyDayWithDelayFlatMapExperiment,
-        BackendSunnyDayWithDelaySwitchMapExperiment,
+//        BufferExperiment1,
+//        BackendSunnyDayExperiment,
+//        BackendSunnyDayWithDelayFlatMapExperiment,
+//        BackendSunnyDayWithDelaySwitchMapExperiment,
 //        BackendWithErrorsAndDelayExperiment
-        BackendWithErrorsAndDelayExperiment1
+//        BackendWithErrorsAndDelayExperiment1,
+//        CreateSourceExperiment0
+        CreateSourceExperiment1
 )
 
 private object CustomSchedulers {
