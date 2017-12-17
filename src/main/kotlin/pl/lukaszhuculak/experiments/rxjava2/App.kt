@@ -6,7 +6,9 @@ import pl.lukaszhuculak.experiments.rxjava2.CustomSchedulers.COMPUTATION
 import pl.lukaszhuculak.experiments.rxjava2.CustomSchedulers.IO
 import pl.lukaszhuculak.experiments.rxjava2.CustomSchedulers.NEW_THREAD
 import pl.lukaszhuculak.experiments.rxjava2.CustomSchedulers.SINGLE
-import pl.lukaszhuculak.experiments.rxjava2.experiments.*
+import pl.lukaszhuculak.experiments.rxjava2.experiments.CoreNumIntervalDefaultScheduler
+import pl.lukaszhuculak.experiments.rxjava2.experiments.CoreNumTimes2IntervalDefaultScheduler
+import pl.lukaszhuculak.experiments.rxjava2.experiments.IntervalNewThreadScheduler
 import java.util.concurrent.CountDownLatch
 import java.util.concurrent.Executors
 
@@ -36,12 +38,15 @@ private val experiments: Array<Experiment<*>> = arrayOf(
 //        CreateWithDeferExperiment,
 //        CreateWithSwitchMapExperiment,
 //        CreateWithFlatMapExperiment,
-        BufferExperiment1,
-        BackendSunnyDayExperiment,
-        BackendSunnyDayWithDelayFlatMapExperiment,
-        BackendSunnyDayWithDelaySwitchMapExperiment,
+//        BufferExperiment1,
+//        BackendSunnyDayExperiment,
+//        BackendSunnyDayWithDelayFlatMapExperiment,
+//        BackendSunnyDayWithDelaySwitchMapExperiment,
 //        BackendWithErrorsAndDelayExperiment
-        BackendWithErrorsAndDelayExperiment1
+//        BackendWithErrorsAndDelayExperiment1,
+        CoreNumIntervalDefaultScheduler,
+        CoreNumTimes2IntervalDefaultScheduler,
+        IntervalNewThreadScheduler
 )
 
 private object CustomSchedulers {
